@@ -1,0 +1,54 @@
+Whenever an Account created or updated name with ‘Test’ needs to populate phone value as 12345678. 
+Whenever an account created or updated with email as test@capital.com needs to create a contact and opportunity records under the same account. (parent to child) and also delete the records of the account if having less than 2 records of contact.
+
+
+trigger AccountContact on Account (before insert, before update, after insert, after update, before delete) {
+    set<id> accdeletedids = new set<id>();
+    if(trigger.isbefore && trigger.isinsert){
+        for(Account a: trigger.new){
+            if(a.name == 'Test'){
+                a.phone = '123456789';
+            }
+            
+        }
+        if(trigger.isinsert){
+            
+        }
+    }
+    if(trigger.isafter && (trigger.isinsert || trigger.isupdate)){
+        list<Contact> listcon = new list<Contact>();
+        list<Opportunity> listopp = new list<Opportunity>();
+        for(Account a:trigger.new){
+            if(a.Email__c == 'test@capital.com'){
+                Contact c = new Contact(Accountid = a.Id, lastname= a.Name, phone = a.Phone, email = a.Email__c, MailingCity = a.BillingCity, MailingState = a.BillingState, MailingCountry = a.BillingCountry, MailingPostalCode = a.BillingPostalCode);
+            	listcon.add(c);
+                Opportunity opp = new Opportunity();
+                Opp.AccountId = a.Id;
+                opp.Name = a.Name + ' Opportunity';
+                opp.StageName = 'Analysis';
+                opp.CloseDate = system.today().addDays(30);
+                listopp.add(opp);
+            }
+        }
+        if(listcon.size()>0){
+            insert listcon;
+        }
+        if(listopp.size()>0){
+            insert listopp;
+        }
+    } 
+    if(trigger.isbefore && trigger.isdelete){
+        Map<id,Account> accmap = new Map<id,Account>();
+        For(Account a:trigger.old){
+            accdeletedids.add(a.Id);
+        }
+        for(Account acc: [select id,(select id from contacts)from Account where id in:accDeletedids]){
+            accMap.put(acc.Id,acc);
+        }
+        for(Account a:trigger.old){
+            if(accMap.get(a.Id).contacts.size() >= 2){
+                a.adderror('You cannot delete it');
+            }
+        }
+    }
+}
