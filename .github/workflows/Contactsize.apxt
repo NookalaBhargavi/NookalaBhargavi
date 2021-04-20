@@ -1,0 +1,14 @@
+
+
+trigger Contactsize on Account (after insert,after update, after delete ,after undelete) {
+        set<id> accids = new set<id>();
+		list<Account> listacc = new list<Account>();
+    if(accids.size()>0) {
+        list<Account> acclist = [select id,contact_s__c, (select id from contacts)from Account where id in:accids];
+            if(acclist.size()>0){
+            for(Account a:acclist){
+                a.Contact_s__c = a.contacts.size();
+            }
+        }
+        }
+}
