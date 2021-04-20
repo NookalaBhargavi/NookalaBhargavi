@@ -1,0 +1,65 @@
+On Account, create an Account History object : Lookup - account, old field value, new field value,name of the field and Date created. 
+(Account name, phone, email, billing address(billing city, billing state, billing country, billing postal code) --- Update.
+
+trigger RetriveingAccountvalue on Account (after update) {
+    set<id> accid = new set<id>();
+    list<Account_history__c> listacchistory = new list<Account_history__c>();
+    for(Account a : trigger.new){
+          if(a.Name != trigger.oldmap.get(a.id).Name){
+              accid.add(a.Id);
+              Account_history__c acchis = new Account_history__c(Account__c = a.Id, Name_of_field__c = 'Account Name', New_field_value__c = a.Name, 
+                                                                Old_field_value__c = trigger.oldmap.get(a.id).Name, Date_Created__c = system.today());
+              listacchistory.add(acchis);
+       }
+        if(a.Phone != trigger.oldmap.get(a.id).Phone){
+              accid.add(a.Id);
+              Account_history__c acchis = new Account_history__c(Account__c = a.Id, Name_of_field__c = 'Account Phone', New_field_value__c = a.Phone, 
+                                                                Old_field_value__c = trigger.oldmap.get(a.id).Phone, Date_Created__c = system.today());
+              listacchistory.add(acchis);
+        
+    }
+    if(listacchistory.size()>0){
+        insert listacchistory;
+    }
+        if(a.Email__c != trigger.oldmap.get(a.id).Email__c){
+              accid.add(a.Id);
+              Account_history__c acchis = new Account_history__c(Account__c = a.Id, Name_of_field__c = 'Account Email', New_field_value__c = a.Email__c, 
+                                                                Old_field_value__c = trigger.oldmap.get(a.id).Email__c, Date_Created__c = system.today());
+              listacchistory.add(acchis);
+    }
+    if(listacchistory.size()>0){
+        insert listacchistory;
+    }
+         if(a.BillingCity != trigger.oldmap.get(a.id).BillingCity){
+              accid.add(a.Id);
+              Account_history__c acchis = new Account_history__c(Account__c = a.Id, Name_of_field__c = 'Billing City', New_field_value__c = a.BillingCity, 
+                                                                Old_field_value__c = trigger.oldmap.get(a.id).BillingCity, Date_Created__c = system.today());
+              listacchistory.add(acchis);
+        
+    }
+    if(listacchistory.size()>0){
+        insert listacchistory;
+    }
+         if(a.BillingState != trigger.oldmap.get(a.id).BillingState){
+              accid.add(a.Id);
+              Account_history__c acchis = new Account_history__c(Account__c = a.Id, Name_of_field__c = 'Billing State', New_field_value__c = a.BillingState, 
+                                                                Old_field_value__c = trigger.oldmap.get(a.id).BillingState, Date_Created__c = system.today());
+              listacchistory.add(acchis);
+        
+    }
+    if(listacchistory.size()>0){
+        insert listacchistory;
+    }
+        if(a.BillingPostalCode != trigger.oldmap.get(a.id).BillingPostalCode){
+              accid.add(a.Id);
+              Account_history__c acchis = new Account_history__c(Account__c = a.Id, Name_of_field__c = 'BillingPostalCode', New_field_value__c = a.BillingPostalCode, 
+                                                                Old_field_value__c = trigger.oldmap.get(a.id).BillingPostalCode, Date_Created__c = system.today());
+              listacchistory.add(acchis);
+        
+    }
+    if(listacchistory.size()>0){
+        insert listacchistory;
+    }
+        
+ }
+}
