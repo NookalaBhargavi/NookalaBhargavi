@@ -1,7 +1,7 @@
 - 👋 Hi, I’m @NookalaBhargavi
 - 👀 I’m interested in salesforce development
 - 🌱 I’m currently learning salesforce
-- 💞️ I’m looking to collaborate on 
+- 💞️ I’m looking to collaborate on any Salesforce Admin/development 
 - 📫 How to reach me bhargavinookala@gmail.com
 
 <!---
